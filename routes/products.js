@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const productMocks = require("../utils/mocks/products");
+const ProducstService = require("../services/products");
+const productsService = new ProducstService();
+
+// const productMocks = require("../utils/mocks/products");
 
 /* const products = [
   {
@@ -19,8 +22,14 @@ const productMocks = require("../utils/mocks/products");
 ]; */
 
 // cuando cargue la app se llamara a los products
-router.get("/", function (req, res) {
-  res.render("products", { productMocks });
+router.get("/", async function (req, res, next) {
+  const { tags } = req.query();
+  try {
+    const products = productsService.getProducts({ tags });
+    res.render("products", { products });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // exportamos la ruta

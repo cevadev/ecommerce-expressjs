@@ -17,6 +17,9 @@ app.set("view engine", "pug");
 app.use("/products", productsRouter);
 app.use("/api/products", productsApiRouter);
 
+// middleware bodyparse
+app.use(express.json());
+
 const server = app.listen(3000, function () {
   console.info(`Listening port http://localhost:${server.address().port}`);
 });
