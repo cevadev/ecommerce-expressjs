@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-
 const productsRouter = require("./routes/products");
+
+// middleware para trabajar con archivos estaticos
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 // especificamos donde se encontraran las vistas de nuestro engine (las vistas estan en la carpeta view)
 // las vistas deben ser .jsx
