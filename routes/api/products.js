@@ -65,6 +65,7 @@ router.put("/:productId", async function (req, res, next) {
   const { body: product } = req;
 
   console.info("objeto request with params: ", req.params);
+  console.info("objeto request body: ", req.body);
 
   try {
     const productUpdated = await productsService.updateProduct({

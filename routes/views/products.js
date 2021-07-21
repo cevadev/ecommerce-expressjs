@@ -23,9 +23,9 @@ const productsService = new ProducstService();
 
 // cuando cargue la app se llamara a los products
 router.get("/", async function (req, res, next) {
-  const { tags } = req.query();
+  const { tags } = req.query;
   try {
-    const products = productsService.getProducts({ tags });
+    const products = await productsService.getProducts({ tags });
     res.render("products", { products });
   } catch (err) {
     next(err);
