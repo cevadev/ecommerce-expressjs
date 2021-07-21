@@ -8,6 +8,8 @@ const productsService = new ProductsService();
 // cuando se hace una get al / listamos los products
 router.get("/", async function (req, res, next) {
   const { tags } = req.query;
+  console.info("objeto request query: ", { tags });
+
   try {
     // recibimos los productos
     const products = await productsService.getProducts({ tags });
@@ -23,10 +25,12 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-// enviamos como parametro el id delproduct
+// enviamos como url params el id del product
 router.get("/:productId", async function (req, res, next) {
   // obtenemos el id del product desde el request que la barra de direcciones donde ingresa datos el usuario
   const { productId } = req.params;
+  console.info("objeto request with params: ", req.params);
+
   try {
     const product = await productsService.getProduct({ productId });
 
@@ -42,6 +46,7 @@ router.get("/:productId", async function (req, res, next) {
 router.post("/", async function (req, res, next) {
   // obtenemos el product que envia el usuario. aplicamos un alias al bodys
   const { body: product } = req;
+  console.info("objeto request body: ", req.body);
 
   try {
     const productCreated = await productsService.createProduct({ product });
@@ -58,6 +63,8 @@ router.post("/", async function (req, res, next) {
 router.put("/:productId", async function (req, res, next) {
   const { productId } = req.params;
   const { body: product } = req;
+
+  console.info("objeto request with params: ", req.params);
 
   try {
     const productUpdated = await productsService.updateProduct({
@@ -76,6 +83,7 @@ router.put("/:productId", async function (req, res, next) {
 
 router.delete("/:productId", async function (req, res, next) {
   const { productId } = req.params;
+  console.info("objeto request with params: ", req.params);
   try {
     const productDeleted = productsService.deleteProduct({ productId });
 

@@ -1,24 +1,31 @@
 const express = require("express");
 const path = require("path");
-const app = express();
 
-const productsRouter = require("./routes/products");
+const productsRouter = require("./routes/views/products");
 const productsApiRouter = require("./routes/api/products");
+
+// inicializamos la app de express
+const app = express();
+// middleware bodyparse
+app.use(express.json());
 
 // middleware para trabajar con archivos estaticos
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 // especificamos donde se encontraran las vistas de nuestro engine (las vistas estan en la carpeta view)
-// las vistas deben ser .jsx
+// View engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-// ruta /products
+// routes
 app.use("/products", productsRouter);
 app.use("/api/products", productsApiRouter);
 
-// middleware bodyparse
-app.use(express.json());
+// middleware route handler que redirecciona a la route http://localhost:3000/api/products cuando se
+// ingrese http://localhost:3000/
+app.get("/", function (req, res) {
+  res.redirect("/api/products");
+});
 
 const server = app.listen(3000, function () {
   console.info(`Listening port http://localhost:${server.address().port}`);
