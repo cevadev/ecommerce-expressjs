@@ -11,6 +11,7 @@ router.get("/", async function (req, res, next) {
   console.info("objeto request query: ", { tags });
 
   try {
+    // throw new Error("This is an error from the api");
     // recibimos los productos
     const products = await productsService.getProducts({ tags });
 
