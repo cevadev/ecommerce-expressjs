@@ -1,5 +1,9 @@
+const Joi = require("@hapi/joi");
+
 function validate(data, schema) {
-  return false;
+  // llamamos a la funcion validate de Joi que valida un determinado schema
+  const { error } = schema.validate(data);
+  return error;
 }
 
 function validationHandler(schema, check = "body") {

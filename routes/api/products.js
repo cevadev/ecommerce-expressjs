@@ -5,6 +5,16 @@ const router = express.Router();
 const ProductsService = require("../../services/products");
 const productsService = new ProductsService();
 
+// Importamos los schemas a validar
+const {
+  productIdSchema,
+  productTagSchema,
+  createProductSchema,
+  updateProductSchema,
+} = require("../../utils/schemas/products");
+
+const validation = require("../../utils/middlewares/validationHandlers");
+
 // cuando se hace una get al / listamos los products
 router.get("/", async function (req, res, next) {
   const { tags } = req.query;
@@ -44,44 +54,55 @@ router.get("/:productId", async function (req, res, next) {
   }
 });
 
-router.post("/", async function (req, res, next) {
-  // obtenemos el product que envia el usuario. aplicamos un alias al bodys
-  const { body: product } = req;
-  console.info("objeto request body: ", req.body);
+router.post(
+  "/",
+  validation(createProductSchema, "params"),
+  async function (req, res, next) {
+    // obtenemos el product que envia el usuario. aplicamos un alias al bodys
+    const { body: product } = req;
+    console.info("objeto request body: ", req.body);
 
-  try {
-    const productCreated = await productsService.createProduct({ product });
+    try {
+      const productCreated = await productsService.createProduct({ product });
 
-    res.status(201).json({
-      data: productCreated,
-      message: "products listed",
-    });
-  } catch (err) {
-    next(err);
+      res.status(201).json({
+        data: productCreated,
+        message: "products listed",
+      });
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
-router.put("/:productId", async function (req, res, next) {
-  const { productId } = req.params;
-  const { body: product } = req;
+// validamos el productId sea correcto
+// validamos el schema del product a actualizar
+router.put(
+  "/:productId",
+  validation(productIdSchema, "params"),
+  validation(updateProductSchema),
+  async function (req, res, next) {
+    const { productId } = req.params;
+    const { body: product } = req;
 
-  console.info("objeto request with params: ", req.params);
-  console.info("objeto request body: ", req.body);
+    console.info("objeto request with params: ", req.params);
+    console.info("objeto request body: ", req.body);
 
-  try {
-    const productUpdated = await productsService.updateProduct({
-      productId,
-      product,
-    });
+    try {
+      const productUpdated = await productsService.updateProduct({
+        productId,
+        product,
+      });
 
-    res.status(200).json({
-      data: productUpdated,
-      message: "products updated",
-    });
-  } catch (err) {
-    next(err);
+      res.status(200).json({
+        data: productUpdated,
+        message: "products updated",
+      });
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 router.delete("/:productId", async function (req, res, next) {
   const { productId } = req.params;
