@@ -1,8 +1,9 @@
 const Joi = require("@hapi/joi");
+const boom = require("@hapi/boom");
 
 function validate(data, schema) {
   // llamamos a la funcion validate de Joi que valida un determinado schema
-  const { error } = schema.validate(data);
+  const { error } = Joi.validate(data, schema);
   return error;
 }
 
@@ -13,7 +14,7 @@ function validationHandler(schema, check = "body") {
     const error = validate(req[check], schema);
     // error === true llamamos un error de lo contrario llamamos al siguiente middleware que serian
     // nuestros errorsHandlers
-    error ? next(new Error(error)) : next();
+    error ? next(boom.badRequest(error)) : next();
   };
 }
 
