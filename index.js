@@ -5,6 +5,8 @@ const boom = require("@hapi/boom");
 const productsRouter = require("./routes/views/products");
 const productsApiRouter = require("./routes/api/products");
 
+const authApiRouter = require("./routes/api/auth");
+
 //middleware de errores
 const {
   logErrors,
@@ -31,6 +33,7 @@ app.set("view engine", "pug");
 // routes
 app.use("/products", productsRouter);
 app.use("/api/products", productsApiRouter);
+app.use("/api/auth", authApiRouter);
 
 // middleware route handler que redirecciona a la route http://localhost:3000/api/products cuando se
 // ingrese http://localhost:3000/ hace un redirect
