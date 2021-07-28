@@ -32,7 +32,8 @@ app.set("view engine", "pug");
 
 // routes
 app.use("/products", productsRouter);
-app.use("/api/products", productsApiRouter);
+productsApiRouter(app);
+//app.use("/api/products", productsApiRouter);
 app.use("/api/auth", authApiRouter);
 
 // middleware route handler que redirecciona a la route http://localhost:3000/api/products cuando se
