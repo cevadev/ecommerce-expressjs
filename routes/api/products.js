@@ -3,6 +3,12 @@ const express = require("express");
 const passport = require("passport");
 //const productMocks = require("../../utils/mocks/products");
 
+const cacheResponse = require("../../utils/cacheResponse");
+const {
+  FIVE_MINUTES_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require("../../utils/time");
+
 const ProductsService = require("../../services/products");
 
 // Importamos los schemas a validar
@@ -26,6 +32,7 @@ function productsApi(app) {
 
   // cuando se hace una get al / listamos los products
   router.get("/", async function (req, res, next) {
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
     console.info("objeto request query: ", { tags });
 
@@ -47,6 +54,7 @@ function productsApi(app) {
 
   // enviamos como url params el id del product
   router.get("/:productId", async function (req, res, next) {
+    cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
     // obtenemos el id del product desde el request que la barra de direcciones donde ingresa datos el usuario
     const { productId } = req.params;
     console.info("objeto request with params: ", req.params);
