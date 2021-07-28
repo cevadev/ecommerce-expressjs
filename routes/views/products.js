@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const { config } = require("../../config");
 const ProducstService = require("../../services/products");
 const productsService = new ProducstService();
 
@@ -27,7 +28,8 @@ router.get("/", async function (req, res, next) {
   try {
     // throw new Error("This is an error");
     const products = await productsService.getProducts({ tags });
-    res.render("products", { products });
+    // mode indica si es modo dev or production
+    res.render("products", { products, dev: config.dev });
   } catch (err) {
     next(err);
   }
