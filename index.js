@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const boom = require("@hapi/boom");
 const debug = require("debug")("app:server");
+const helmet = require("helmet");
 
 const productsRouter = require("./routes/views/products");
 const productsApiRouter = require("./routes/api/products");
@@ -20,7 +21,9 @@ const isRequestAjaxOrApi = require("./utils/isRequestAjaxOrApi");
 
 // inicializamos la app de express
 const app = express();
+
 // middleware bodyparse
+app.use(helmet()); // agregamos las reglas de seguridad por defecto de helmet
 app.use(express.json());
 
 // middleware para trabajar con archivos estaticos

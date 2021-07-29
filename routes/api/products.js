@@ -96,6 +96,7 @@ function productsApi(app) {
   // validamos el schema del product a actualizar
   router.put(
     "/:productId",
+    // protegems nuestra ruta sensible
     passport.authenticate("jwt", { session: false }),
     validation(productIdSchema, "params"),
     validation(updateProductSchema),
